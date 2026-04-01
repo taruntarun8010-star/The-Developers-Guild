@@ -1,0 +1,116 @@
+{
+  "users": [
+    {
+      "id": "360525bf-f8d8-4e1e-9edf-6f519957e6d9",
+      "name": "Fresh User",
+      "email": "fresh.user.1775047038167@gmail.com",
+      "collegeId": "2026CS001",
+      "passwordHash": "$2b$10$z4mHT/LJKbierN37svlfUOti7T6EaCadyxO3uoQTkJNlvvZ84GhOG",
+      "verificationCode": "976057",
+      "verificationExpiresAt": "2026-04-01T12:52:18.170Z",
+      "isVerified": false,
+      "joinedAt": "2026-04-01T12:37:18.244Z",
+      "status": "active"
+    },
+    {
+      "id": "bcfd1312-90be-4c85-be1e-842e1062b6f0",
+      "name": "Maksad",
+      "email": "maksadyt001@gmail.com",
+      "collegeId": null,
+      "passwordHash": "$2b$10$kMU3wzOSEjfHYvIzJbch6ex0jb0PgtbP.m69QK9QFjJ49QAOjISP6",
+      "isVerified": true,
+      "joinedAt": "2026-04-01T12:45:55.463Z",
+      "status": "active",
+      "lastLoginAt": "2026-04-01T12:46:21.918Z",
+      "refreshTokens": [
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJraW5kIjoidXNlciIsInN1YiI6ImJjZmQxMzEyLTkwYmUtNGM4NS1iZTFlLTg0MmUxMDYyYjZmMCIsImVtYWlsIjoibWFrc2FkeXQwMDFAZ21haWwuY29tIiwiaWF0IjoxNzc1MDQ3NTgxLCJleHAiOjE3Nzc2Mzk1ODF9.O1LGGCPn3HnIQWQlbuRNOX3UA10AHZL_RvkDOYE5rhI"
+      ],
+      "studentProjects": []
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "name": "Welcome to the Guild",
+      "date": "2026-04-10",
+      "time": "10:00 AM",
+      "description": "Introduction to the club, core technologies, and upcoming projects. Meet your fellow guild members!",
+      "category": "Orientation",
+      "location": "Audi-1, AIMT",
+      "capacity": 120,
+      "registrationDeadline": "2026-04-09"
+    },
+    {
+      "id": 2,
+      "name": "React & Three.js Workshop",
+      "date": "2026-04-15",
+      "time": "2:00 PM",
+      "description": "Learn how to build stunning 3D interfaces with React Three Fiber and Three.js. Hands-on coding session.",
+      "category": "Technical",
+      "location": "Lab-2, CSE Dept",
+      "capacity": 50,
+      "registrationDeadline": "2026-04-14"
+    },
+    {
+      "id": 3,
+      "name": "Guild Hackathon 2027",
+      "date": "2026-05-01",
+      "time": "9:00 AM",
+      "description": "A 24-hour coding challenge to solve real-world problems. Form teams, win prizes, build legacy!",
+      "category": "Hackathon1",
+      "location": "Main Hall, AIMT",
+      "capacity": 200,
+      "registrationDeadline": "2026-04-28"
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "title": "Guild Attendance QR",
+      "summary": "QR-based event attendance and analytics dashboard for organizers.",
+      "techStack": "React, Node.js, Express, QR",
+      "githubUrl": "",
+      "demoUrl": "",
+      "status": "In Progress",
+      "createdAt": "2026-03-24T10:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "AIMT Placement Prep Hub",
+      "summary": "Track coding sheets, mock interviews, and contest readiness in one portal.",
+      "techStack": "React, FastAPI, PostgreSQL",
+      "githubUrl": "",
+      "demoUrl": "",
+      "status": "Planning",
+      "createdAt": "2026-03-24T10:32:00.000Z"
+    }
+  ],
+  "registrations": [],
+  "contactSubmissions": [
+    {
+      "id": "contact-1775047836406",
+      "name": "pagal pari",
+      "email": "pagalpari@gmai.com",
+      "message": "mein hu pagal pari sinha or meri ek butti bhen hai jiska naam   pihu dayan hai  or  uske daath thode bhar hai",
+      "status": "new",
+      "createdAt": "2026-04-01T12:50:36.406Z"
+    },
+    {
+      "id": "contact-1775047763153",
+      "name": "Contact Retry",
+      "email": "retry.test@gmail.com",
+      "message": "Contact after db write fix",
+      "status": "new",
+      "createdAt": "2026-04-01T12:49:23.153Z"
+    }
+  ],
+  "auditLogs": [],
+  "notifications": [],
+  "adminUsers": [],
+  "contentSettings": {
+    "announcement": "Welcome to the Developers Guild admin panel.",
+    "heroBadge": "Build. Learn. Lead.",
+    "updatedAt": "2026-03-24T20:13:07.347Z"
+  },
+  "memberDirectory": []
+}

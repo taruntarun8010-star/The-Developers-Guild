@@ -1,0 +1,180 @@
+{
+  "users": [
+    {
+      "id": "1774377412985",
+      "name": "tarun",
+      "email": "maksadyt001@gmail.com",
+      "collegeId": "123456",
+      "joinedAt": "2026-03-24T18:36:52.985Z",
+      "isVerified": true,
+      "verificationCode": null,
+      "verificationExpiresAt": null,
+      "passwordHash": "$2b$10$iGII6j3/XTdZgvFy8./iiepz2spF2cXbDukCa9ZuBdSA.Extl0bg6",
+      "emailVerifiedAt": "2026-03-24T18:37:17.747Z",
+      "loginOtp": null,
+      "loginOtpExpiresAt": null,
+      "lastLoginAt": "2026-03-24T19:13:22.942Z",
+      "profilePhoto": null,
+      "updatedAt": "2026-03-24T19:25:47.714Z"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "name": "Welcome to the Guild",
+      "date": "2026-04-10",
+      "time": "10:00 AM",
+      "description": "Introduction to the club, core technologies, and upcoming projects. Meet your fellow guild members!",
+      "category": "Orientation",
+      "location": "Audi-1, AIMT",
+      "capacity": 120,
+      "registrationDeadline": "2026-04-09"
+    },
+    {
+      "id": 2,
+      "name": "React & Three.js Workshop",
+      "date": "2026-04-15",
+      "time": "2:00 PM",
+      "description": "Learn how to build stunning 3D interfaces with React Three Fiber and Three.js. Hands-on coding session.",
+      "category": "Technical",
+      "location": "Lab-2, CSE Dept",
+      "capacity": 50,
+      "registrationDeadline": "2026-04-14"
+    },
+    {
+      "id": 3,
+      "name": "Guild Hackathon 2026",
+      "date": "2026-05-01",
+      "time": "9:00 AM",
+      "description": "A 24-hour coding challenge to solve real-world problems. Form teams, win prizes, build legacy!",
+      "category": "Hackathon",
+      "location": "Main Hall, AIMT",
+      "capacity": 200,
+      "registrationDeadline": "2026-04-28"
+    },
+    {
+      "id": 4,
+      "name": "Open Source Bootcamp",
+      "date": "2026-05-20",
+      "time": "11:00 AM",
+      "description": "Contribute to real open-source projects. Learn Git workflows, PR etiquette, and collaboration.",
+      "category": "Workshop",
+      "location": "Seminar Hall, AIMT",
+      "capacity": 80,
+      "registrationDeadline": "2026-05-18"
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "title": "Guild Attendance QR",
+      "summary": "QR-based event attendance and analytics dashboard for organizers.",
+      "techStack": "React, Node.js, Express, QR",
+      "githubUrl": "",
+      "demoUrl": "",
+      "status": "In Progress",
+      "createdAt": "2026-03-24T10:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "AIMT Placement Prep Hub",
+      "summary": "Track coding sheets, mock interviews, and contest readiness in one portal.",
+      "techStack": "React, FastAPI, PostgreSQL",
+      "githubUrl": "",
+      "demoUrl": "",
+      "status": "Planning",
+      "createdAt": "2026-03-24T10:32:00.000Z"
+    }
+  ],
+  "registrations": [],
+  "contactSubmissions": [
+    {
+      "id": "1774380343454",
+      "name": "Feature Test",
+      "email": "maksadyt001@gmail.com",
+      "message": "Testing contact submission storage and mail",
+      "createdAt": "2026-03-24T19:25:43.454Z",
+      "status": "read",
+      "readAt": "2026-03-24T19:35:56.419Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "audit-1774383281355-316",
+      "action": "report.export",
+      "details": {
+        "type": "events",
+        "rows": 4
+      },
+      "adminEmail": "jontycreation@gmail.com",
+      "adminRole": "super_admin",
+      "ip": "::1",
+      "createdAt": "2026-03-24T20:14:41.355Z"
+    },
+    {
+      "id": "audit-1774383269924-864",
+      "action": "report.export",
+      "details": {
+        "type": "users",
+        "rows": 1
+      },
+      "adminEmail": "jontycreation@gmail.com",
+      "adminRole": "super_admin",
+      "ip": "::1",
+      "createdAt": "2026-03-24T20:14:29.924Z"
+    },
+    {
+      "id": "audit-1774383243736-590",
+      "action": "admin.login",
+      "details": {
+        "email": "jontycreation@gmail.com",
+        "role": "super_admin"
+      },
+      "adminEmail": "system",
+      "adminRole": "system",
+      "ip": "system",
+      "createdAt": "2026-03-24T20:14:03.736Z"
+    },
+    {
+      "id": "audit-1774383193347-883",
+      "action": "admin.login",
+      "details": {
+        "email": "jontycreation@gmail.com",
+        "role": "super_admin"
+      },
+      "adminEmail": "system",
+      "adminRole": "system",
+      "ip": "system",
+      "createdAt": "2026-03-24T20:13:13.347Z"
+    },
+    {
+      "id": "audit-1774383187349-745",
+      "action": "admin.login",
+      "details": {
+        "email": "jontycreation@gmail.com",
+        "role": "super_admin"
+      },
+      "adminEmail": "system",
+      "adminRole": "system",
+      "ip": "system",
+      "createdAt": "2026-03-24T20:13:07.349Z"
+    }
+  ],
+  "notifications": [],
+  "adminUsers": [
+    {
+      "id": "admin-1774383187347",
+      "name": "Primary Admin",
+      "email": "jontycreation@gmail.com",
+      "role": "super_admin",
+      "isActive": true,
+      "createdAt": "2026-03-24T20:13:07.347Z",
+      "managedByEnv": true
+    }
+  ],
+  "contentSettings": {
+    "announcement": "Welcome to the Developers Guild admin panel.",
+    "heroBadge": "Build. Learn. Lead.",
+    "updatedAt": "2026-03-24T20:13:07.347Z"
+  }
+}
