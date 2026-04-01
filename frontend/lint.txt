@@ -1,0 +1,18 @@
+﻿
+C:\Users\Tarun Sinha\OneDrive\Desktop\website\frontend\src\components\ThemeContext.jsx
+  5:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Tarun Sinha\OneDrive\Desktop\website\frontend\src\pages\Events.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\Tarun Sinha\OneDrive\Desktop\website\frontend\src\pages\Home.jsx
+  3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\Tarun Sinha\OneDrive\Desktop\website\frontend\src\pages\Login.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\Tarun Sinha\OneDrive\Desktop\website\frontend\src\pages\Register.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+Γ£û 5 problems (5 errors, 0 warnings)
+
