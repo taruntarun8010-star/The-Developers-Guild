@@ -15,15 +15,29 @@ const { getDb, writeDb } = require('./dbUtils');
 
 const app = express();
 
-// 1. Clean CORS Configuration
+// 1. Allowed Origins ki list banayein
+const allowedOrigins = [
+  'https://thedevelopersguild.tech',
+  'https://the-developers-guild-git-main-tarun-workshop.vercel.app',
+  'https://the-developers-guild.vercel.app'
+];
+
+// 2. CORS Options ko dynamic banayein
 const corsOptions = {
-  origin: 'https://thedevelopersguild.tech',
+  origin: function (origin, callback) {
+    // Agar request bina origin ke ho (like Postman) ya allowed list mein ho
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
 
-// 2. Middlewares (Sahi Order mein)
+// 3. Middlewares Apply karein
 app.use(cors(corsOptions));
 app.options(/(.*)/, cors(corsOptions));
 
