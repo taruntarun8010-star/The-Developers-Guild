@@ -25,6 +25,7 @@ const REFRESH_COOKIE_NAME = 'dg_refresh_token';
 const corsOptions = {
   origin: 'https://thedevelopersguild.tech',
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
 
@@ -48,6 +49,7 @@ const contactLimiter = rateLimit({
 });
 
 app.use(cors(corsOptions));
+app.options('*', cors());
 app.use(bodyParser.json());
 
 const parseCookies = (cookieHeader) => {
