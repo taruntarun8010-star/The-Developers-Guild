@@ -16,18 +16,17 @@ const { getDb, writeDb } = require('./dbUtils');
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-const FRONTEND_BASE_URL = process.env.FRONTEND_BASE_URL || 'http://localhost:5173';
 const USER_JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key';
 const REFRESH_JWT_SECRET = process.env.REFRESH_JWT_SECRET || 'aimt-refresh-secret-2026-change';
 const ACCESS_TOKEN_TTL = '15m';
 const REFRESH_TOKEN_TTL = '30d';
 const REFRESH_COOKIE_NAME = 'dg_refresh_token';
 
-const allowedOrigins = [
-  'https://thedevelopersguild.tech',
-  FRONTEND_BASE_URL,
-  'http://localhost:5173',
-];
+const corsOptions = {
+  origin: 'https://thedevelopersguild.tech',
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  credentials: true,
+};
 
 // Rate limiters
 const chatLimiter = rateLimit({
@@ -48,16 +47,7 @@ const contactLimiter = rateLimit({
   message: { message: 'Too many contact messages. Please wait a few minutes and try again.' }
 });
 
-app.use(cors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true,
-}));
-app.options('*', cors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true,
-}));
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 const parseCookies = (cookieHeader) => {
