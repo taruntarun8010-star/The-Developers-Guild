@@ -15,19 +15,19 @@ const { getDb, writeDb } = require('./dbUtils');
 
 const app = express();
 
-// 1. CORS Configuration (Sirf EK baar setup karein)
+// --- 1. CORS Configuration ---
 const corsOptions = {
   origin: 'https://thedevelopersguild.tech',
-  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Array format is better
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
 
-// 2. Middlewares Apply Karein
+// --- 2. Apply CORS Middlewares (Order Matters!) ---
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Pre-flight ke liye same options use karein
+app.options('*', cors(corsOptions)); // Yahan corsOptions pass karna zaroori hai
 
-// 3. Body Parser aur Baaki cheezein
+// --- 3. Other Middlewares ---
 app.use(bodyParser.json());
 
 // 4. Constants Setup
@@ -56,8 +56,6 @@ const contactLimiter = rateLimit({
   max: 8,
   message: { message: 'Too many contact messages. Please wait a few minutes and try again.' }
 });
-
-app.use(bodyParser.json());
 
 const parseCookies = (cookieHeader) => {
   const source = String(cookieHeader || '');
