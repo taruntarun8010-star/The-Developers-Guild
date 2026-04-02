@@ -15,24 +15,24 @@ const { getDb, writeDb } = require('./dbUtils');
 
 const app = express();
 
-// --- 1. CORS Configuration ---
+// 1. Clean CORS Configuration
 const corsOptions = {
   origin: 'https://thedevelopersguild.tech',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Array format is better
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
 
-// --- 2. Apply CORS Middlewares (Order Matters!) ---
+// 2. Middlewares (Sahi Order mein)
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Yahan corsOptions pass karna zaroori hai
+app.options('*', cors(corsOptions));
 
-// --- 3. Other Middlewares ---
-app.use(bodyParser.json());
-
-// 4. Constants Setup
+// 3. Constants Setup
 const PORT = process.env.PORT || 5000;
 const USER_JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key';
+// ... baaki constants yahan aayenge
+
+app.use(bodyParser.json());
 const REFRESH_JWT_SECRET = process.env.REFRESH_JWT_SECRET || 'aimt-refresh-secret-2026-change';
 const ACCESS_TOKEN_TTL = '15m';
 const REFRESH_TOKEN_TTL = '30d';
