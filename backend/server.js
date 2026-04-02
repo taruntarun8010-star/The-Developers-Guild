@@ -25,7 +25,7 @@ const corsOptions = {
 
 // 2. Middlewares (Sahi Order mein)
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.options(/(.*)/, cors(corsOptions));
 
 // 3. Constants Setup
 const PORT = process.env.PORT || 5000;
