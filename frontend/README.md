@@ -61,7 +61,7 @@ Set this variable in your hosting provider:
 
 Local development fallback remains:
 
-- `http://localhost:5000`
+- `https://the-developers-guild.onrender.com`
 
 See also:
 

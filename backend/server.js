@@ -23,6 +23,12 @@ const ACCESS_TOKEN_TTL = '15m';
 const REFRESH_TOKEN_TTL = '30d';
 const REFRESH_COOKIE_NAME = 'dg_refresh_token';
 
+const allowedOrigins = [
+  'https://thedevelopersguild.tech',
+  FRONTEND_BASE_URL,
+  'http://localhost:5173',
+];
+
 // Rate limiters
 const chatLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,
@@ -43,7 +49,13 @@ const contactLimiter = rateLimit({
 });
 
 app.use(cors({
-  origin: true,
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+}));
+app.options('*', cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
 app.use(bodyParser.json());

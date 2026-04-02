@@ -9,6 +9,8 @@ const categoryColors = {
   Workshop:    { bg: 'rgba(139,92,246,0.15)', text: '#8b5cf6' },
 };
 
+const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
+
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +47,7 @@ const Events = () => {
   useEffect(() => {
     const loadEvents = async () => {
       try {
-        const r = await fetch('http://localhost:5000/api/events');
+        const r = await fetch(`${API_BASE_URL}/api/events`);
         const data = await r.json();
         setEvents(data);
       } catch {
@@ -58,7 +60,7 @@ const Events = () => {
     const loadRegistrations = async () => {
       if (!user) return;
       try {
-        const r = await fetch(`http://localhost:5000/api/user/${user.id}/registrations`);
+        const r = await fetch(`${API_BASE_URL}/api/user/${user.id}/registrations`);
         const evts = await r.json();
         const map = {};
         const teamMap = {};
@@ -70,7 +72,7 @@ const Events = () => {
             teamMembers: Array.isArray(event.teamMembers) ? event.teamMembers : [],
           };
           try {
-            const invRes = await fetch(`http://localhost:5000/api/events/${event.id}/team-invites?userId=${encodeURIComponent(user.id)}`);
+            const invRes = await fetch(`${API_BASE_URL}/api/events/${event.id}/team-invites?userId=${encodeURIComponent(user.id)}`);
             const invData = await invRes.json();
             invitesMap[event.id] = Array.isArray(invData?.invites) ? invData.invites : [];
           } catch {
@@ -90,12 +92,12 @@ const Events = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const refreshData = async () => {
-    const eventsRes = await fetch('http://localhost:5000/api/events');
+    const eventsRes = await fetch(`${API_BASE_URL}/api/events`);
     const eventsData = await eventsRes.json();
     setEvents(eventsData);
 
     if (user) {
-      const regsRes = await fetch(`http://localhost:5000/api/user/${user.id}/registrations`);
+      const regsRes = await fetch(`${API_BASE_URL}/api/user/${user.id}/registrations`);
       const evts = await regsRes.json();
       const map = {};
       const teamMap = {};
@@ -107,7 +109,7 @@ const Events = () => {
           teamMembers: Array.isArray(event.teamMembers) ? event.teamMembers : [],
         };
         try {
-          const invRes = await fetch(`http://localhost:5000/api/events/${event.id}/team-invites?userId=${encodeURIComponent(user.id)}`);
+          const invRes = await fetch(`${API_BASE_URL}/api/events/${event.id}/team-invites?userId=${encodeURIComponent(user.id)}`);
           const invData = await invRes.json();
           invitesMap[event.id] = Array.isArray(invData?.invites) ? invData.invites : [];
         } catch {
@@ -132,7 +134,7 @@ const Events = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/events/register', {
+      const res = await fetch(`${API_BASE_URL}/api/events/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id, eventId }),
@@ -171,7 +173,7 @@ const Events = () => {
   };
 
   const handleDownloadCalendar = (eventId) => {
-    window.open(`http://localhost:5000/api/events/${eventId}/calendar.ics`, '_blank');
+    window.open(`${API_BASE_URL}/api/events/${eventId}/calendar.ics`, '_blank');
   };
 
   const handleDownloadCertificate = (eventId) => {
@@ -179,7 +181,7 @@ const Events = () => {
       showToast('Please log in first.', 'error');
       return;
     }
-    window.open(`http://localhost:5000/api/events/${eventId}/certificate?userId=${encodeURIComponent(user.id)}`, '_blank');
+    window.open(`${API_BASE_URL}/api/events/${eventId}/certificate?userId=${encodeURIComponent(user.id)}`, '_blank');
   };
 
   const handleCancelRegistration = async (eventId) => {
@@ -189,7 +191,7 @@ const Events = () => {
     }
 
     try {
-      const reqRes = await fetch('http://localhost:5000/api/events/cancel-registration/request-otp', {
+      const reqRes = await fetch(`${API_BASE_URL}/api/events/cancel-registration/request-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id, eventId }),
@@ -202,7 +204,7 @@ const Events = () => {
       const otp = window.prompt('Enter OTP sent to your email to confirm cancellation:');
       if (!otp) return;
 
-      const res = await fetch('http://localhost:5000/api/events/cancel-registration/verify-otp', {
+      const res = await fetch(`${API_BASE_URL}/api/events/cancel-registration/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id, eventId, otp }),
@@ -224,7 +226,7 @@ const Events = () => {
 
   const persistTeamMembers = async (eventId, teamMembers) => {
     if (!user) return;
-    const res = await fetch(`http://localhost:5000/api/events/${eventId}/team-members`, {
+    const res = await fetch(`${API_BASE_URL}/api/events/${eventId}/team-members`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: user.id, teamMembers }),
@@ -272,7 +274,7 @@ const Events = () => {
     const inviteeName = window.prompt('Enter teammate name (optional):') || '';
 
     try {
-      const res = await fetch(`http://localhost:5000/api/events/${eventId}/team-invites`, {
+      const res = await fetch(`${API_BASE_URL}/api/events/${eventId}/team-invites`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id, inviteeEmail, inviteeName }),
@@ -289,7 +291,7 @@ const Events = () => {
   const handleRevokeInvite = async (eventId, inviteId) => {
     if (!user) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/events/${eventId}/team-invites/${inviteId}/revoke`, {
+      const res = await fetch(`${API_BASE_URL}/api/events/${eventId}/team-invites/${inviteId}/revoke`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id }),
@@ -306,7 +308,7 @@ const Events = () => {
   const handleResendInvite = async (eventId, inviteId) => {
     if (!user) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/events/${eventId}/team-invites/${inviteId}/resend`, {
+      const res = await fetch(`${API_BASE_URL}/api/events/${eventId}/team-invites/${inviteId}/resend`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id }),
@@ -339,7 +341,7 @@ const Events = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/events/${eventId}/checkin-qr?userId=${encodeURIComponent(user.id)}`);
+      const res = await fetch(`${API_BASE_URL}/api/events/${eventId}/checkin-qr?userId=${encodeURIComponent(user.id)}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Could not generate check-in QR.');
 

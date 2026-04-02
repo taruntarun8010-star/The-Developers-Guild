@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
+const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
+
 const TeamInviteResponse = () => {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ const TeamInviteResponse = () => {
       }
 
       try {
-        const res = await fetch(`http://localhost:5000/api/events/team-invites/${token}`);
+        const res = await fetch(`${API_BASE_URL}/api/events/team-invites/${token}`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Unable to load invite.');
         setInvite(data.invite || null);
@@ -52,7 +54,7 @@ const TeamInviteResponse = () => {
 
     setState((prev) => ({ ...prev, actionLoading: true, message: '' }));
     try {
-      const res = await fetch('http://localhost:5000/api/events/team-invites/respond', {
+      const res = await fetch(`${API_BASE_URL}/api/events/team-invites/respond`, {
         method: 'POST',
         credentials: 'include',
         headers: {

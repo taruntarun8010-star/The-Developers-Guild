@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Pencil, Trash2, PlusCircle } from 'lucide-react';
 
+const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
+
 const emptyForm = {
   name: '',
   email: '',
@@ -31,7 +33,7 @@ const TeamMembersManager = ({ title = 'Guild Team', subtitle = 'Meet our active 
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:5000/api/members');
+      const res = await fetch(`${API_BASE_URL}/api/members`);
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Unable to load team members.');
@@ -83,12 +85,12 @@ const TeamMembersManager = ({ title = 'Guild Team', subtitle = 'Meet our active 
           payload.password = form.password.trim();
         }
 
-        await authFetch(`http://localhost:5000/api/admin/members/${editingMemberId}`, {
+        await authFetch(`${API_BASE_URL}/api/admin/members/${editingMemberId}`, {
           method: 'PUT',
           body: JSON.stringify(payload),
         });
       } else {
-        await authFetch('http://localhost:5000/api/admin/members', {
+        await authFetch(`${API_BASE_URL}/api/admin/members`, {
           method: 'POST',
           body: JSON.stringify(form),
         });
@@ -120,7 +122,7 @@ const TeamMembersManager = ({ title = 'Guild Team', subtitle = 'Meet our active 
 
     setError('');
     try {
-      await authFetch(`http://localhost:5000/api/admin/members/${memberId}`, { method: 'DELETE' });
+      await authFetch(`${API_BASE_URL}/api/admin/members/${memberId}`, { method: 'DELETE' });
       if (editingMemberId === memberId) {
         setEditingMemberId(null);
         setForm(emptyForm);

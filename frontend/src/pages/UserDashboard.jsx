@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LogOut, Edit2, BarChart3, Calendar, Home, FileText, Users, Mail, Menu, X } from 'lucide-react';
 
+const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
+
 const UserDashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,7 +58,7 @@ const UserDashboard = () => {
 
   const loadRegistrations = async (userId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/user/${userId}/registrations`);
+      const res = await fetch(`${API_BASE_URL}/api/user/${userId}/registrations`);
       const data = await res.json();
       setRegistrations(Array.isArray(data) ? data : []);
     } catch {
@@ -68,7 +70,7 @@ const UserDashboard = () => {
 
   const loadStudentProjects = async (userId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/user/${userId}/student-projects`);
+      const res = await fetch(`${API_BASE_URL}/api/user/${userId}/student-projects`);
       const data = await res.json();
       setStudentProjects(Array.isArray(data) ? data : []);
     } catch {
@@ -83,7 +85,7 @@ const UserDashboard = () => {
         ...formData,
         skills: skillsInput,
       };
-      const res = await fetch(`http://localhost:5000/api/user/${user.id}/update-profile`, {
+      const res = await fetch(`${API_BASE_URL}/api/user/${user.id}/update-profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -105,7 +107,7 @@ const UserDashboard = () => {
     if (!user) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/user/${user.id}/student-projects`, {
+      const res = await fetch(`${API_BASE_URL}/api/user/${user.id}/student-projects`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(projectForm),
@@ -124,7 +126,7 @@ const UserDashboard = () => {
     if (!user) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/user/${user.id}/student-projects/${projectId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/user/${user.id}/student-projects/${projectId}`, {
         method: 'DELETE',
       });
       const data = await res.json();

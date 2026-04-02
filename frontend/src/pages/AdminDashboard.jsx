@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Pencil, Trash2, PlusCircle, BarChart3, FolderKanban, Mail, Users, CalendarDays, MessageSquare, CheckCircle2, Bell, Shield, Download, Database } from 'lucide-react';
 import { useLanguage } from '../components/LanguageContext';
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
 
 const emptyEventForm = {
   name: '',
@@ -151,18 +151,18 @@ const AdminDashboard = () => {
       };
 
       const [eventsData, projectsData, analyticsData, contactsData, adminTeamData, membersData, usersData, registrationsData, auditData, notificationsData, backupsData, contentSettingsData] = await Promise.all([
-        safeLoad('http://localhost:5000/api/admin/events', []),
-        safeLoad('http://localhost:5000/api/admin/projects', []),
-        safeLoad('http://localhost:5000/api/admin/analytics', { totals: {}, categoryCounts: {}, registrationSeries: [] }),
-        safeLoad('http://localhost:5000/api/admin/contact-submissions', []),
-        safeLoad('http://localhost:5000/api/admin/admin-users', []),
-        safeLoad('http://localhost:5000/api/admin/members', []),
-        safeLoad('http://localhost:5000/api/admin/users', []),
-        safeLoad('http://localhost:5000/api/admin/registrations', []),
-        safeLoad('http://localhost:5000/api/admin/audit-logs?limit=80', []),
-        safeLoad('http://localhost:5000/api/admin/notifications', []),
-        safeLoad('http://localhost:5000/api/admin/backups', []),
-        safeLoad('http://localhost:5000/api/admin/content-settings', {
+        safeLoad(`${API_BASE_URL}/api/admin/events`, []),
+        safeLoad(`${API_BASE_URL}/api/admin/projects`, []),
+        safeLoad(`${API_BASE_URL}/api/admin/analytics`, { totals: {}, categoryCounts: {}, registrationSeries: [] }),
+        safeLoad(`${API_BASE_URL}/api/admin/contact-submissions`, []),
+        safeLoad(`${API_BASE_URL}/api/admin/admin-users`, []),
+        safeLoad(`${API_BASE_URL}/api/admin/members`, []),
+        safeLoad(`${API_BASE_URL}/api/admin/users`, []),
+        safeLoad(`${API_BASE_URL}/api/admin/registrations`, []),
+        safeLoad(`${API_BASE_URL}/api/admin/audit-logs?limit=80`, []),
+        safeLoad(`${API_BASE_URL}/api/admin/notifications`, []),
+        safeLoad(`${API_BASE_URL}/api/admin/backups`, []),
+        safeLoad(`${API_BASE_URL}/api/admin/content-settings`, {
           announcement: '',
           heroBadge: '',
           aboutTitle: "About The Developers' Guild",
@@ -213,7 +213,7 @@ const AdminDashboard = () => {
 
     const intervalId = setInterval(async () => {
       try {
-        const res = await authFetch('http://localhost:5000/api/admin/me', { method: 'GET' });
+        const res = await authFetch(`${API_BASE_URL}/api/admin/me`, { method: 'GET' });
         if (res.status === 401) {
           handleSessionError();
         }
@@ -283,8 +283,8 @@ const AdminDashboard = () => {
     try {
       const isEditing = Boolean(editingEventId);
       const endpoint = isEditing
-        ? `http://localhost:5000/api/admin/events/${editingEventId}`
-        : 'http://localhost:5000/api/admin/events';
+        ? `${API_BASE_URL}/api/admin/events/${editingEventId}`
+        : `${API_BASE_URL}/api/admin/events`;
       const method = isEditing ? 'PUT' : 'POST';
 
       const res = await authFetch(endpoint, {
@@ -311,8 +311,8 @@ const AdminDashboard = () => {
     try {
       const isEditing = Boolean(editingProjectId);
       const endpoint = isEditing
-        ? `http://localhost:5000/api/admin/projects/${editingProjectId}`
-        : 'http://localhost:5000/api/admin/projects';
+        ? `${API_BASE_URL}/api/admin/projects/${editingProjectId}`
+        : `${API_BASE_URL}/api/admin/projects`;
       const method = isEditing ? 'PUT' : 'POST';
 
       const res = await authFetch(endpoint, {
@@ -335,7 +335,7 @@ const AdminDashboard = () => {
   const deleteEvent = async (eventId) => {
     if (!window.confirm('Delete this event? This will remove related registrations too.')) return;
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/events/${eventId}`, { method: 'DELETE' });
+      const res = await authFetch(`${API_BASE_URL}/api/admin/events/${eventId}`, { method: 'DELETE' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Unable to delete event.');
       showToast('Event deleted.');
@@ -348,7 +348,7 @@ const AdminDashboard = () => {
   const deleteProject = async (projectId) => {
     if (!window.confirm('Delete this project?')) return;
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/projects/${projectId}`, { method: 'DELETE' });
+      const res = await authFetch(`${API_BASE_URL}/api/admin/projects/${projectId}`, { method: 'DELETE' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Unable to delete project.');
       showToast('Project deleted.');
@@ -360,7 +360,7 @@ const AdminDashboard = () => {
 
   const markContactRead = async (contactId) => {
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/contact-submissions/${contactId}/read`, { method: 'PUT' });
+      const res = await authFetch(`${API_BASE_URL}/api/admin/contact-submissions/${contactId}/read`, { method: 'PUT' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Could not mark as read.');
       showToast('Marked as read.');
@@ -373,7 +373,7 @@ const AdminDashboard = () => {
   const deleteContact = async (contactId) => {
     if (!window.confirm('Delete this contact submission?')) return;
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/contact-submissions/${contactId}`, { method: 'DELETE' });
+      const res = await authFetch(`${API_BASE_URL}/api/admin/contact-submissions/${contactId}`, { method: 'DELETE' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Could not delete submission.');
       showToast('Submission deleted.');
@@ -385,7 +385,7 @@ const AdminDashboard = () => {
 
   const updateUserStatus = async (userId, status) => {
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/users/${userId}/status`, {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/users/${userId}/status`, {
         method: 'PUT',
         body: JSON.stringify({ status }),
       });
@@ -400,7 +400,7 @@ const AdminDashboard = () => {
 
   const updateUserVerification = async (userId, isVerified) => {
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/users/${userId}/verification`, {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/users/${userId}/verification`, {
         method: 'PUT',
         body: JSON.stringify({ isVerified }),
       });
@@ -415,7 +415,7 @@ const AdminDashboard = () => {
 
   const updateRegistrationStatus = async (userId, eventId, status) => {
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/registrations/${userId}/${eventId}/status`, {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/registrations/${userId}/${eventId}/status`, {
         method: 'PUT',
         body: JSON.stringify({ status }),
       });
@@ -430,7 +430,7 @@ const AdminDashboard = () => {
 
   const updateContactStatus = async (contactId, status) => {
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/contact-submissions/${contactId}/status`, {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/contact-submissions/${contactId}/status`, {
         method: 'PUT',
         body: JSON.stringify({ status }),
       });
@@ -445,7 +445,7 @@ const AdminDashboard = () => {
 
   const markNotificationRead = async (notificationId) => {
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/notifications/${notificationId}/read`, { method: 'PUT' });
+      const res = await authFetch(`${API_BASE_URL}/api/admin/notifications/${notificationId}/read`, { method: 'PUT' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Unable to mark notification as read.');
       await loadDashboardData();
@@ -456,7 +456,7 @@ const AdminDashboard = () => {
 
   const downloadReport = async (type) => {
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/reports/export?type=${encodeURIComponent(type)}`, {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/reports/export?type=${encodeURIComponent(type)}`, {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -482,7 +482,7 @@ const AdminDashboard = () => {
 
   const createBackup = async () => {
     try {
-      const res = await authFetch('http://localhost:5000/api/admin/backups', { method: 'POST' });
+      const res = await authFetch(`${API_BASE_URL}/api/admin/backups`, { method: 'POST' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Unable to create backup.');
       showToast('Backup created successfully.');
@@ -495,7 +495,7 @@ const AdminDashboard = () => {
   const restoreBackup = async (backupName) => {
     if (!window.confirm(`Restore backup ${backupName}? This will replace current database data.`)) return;
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/backups/${encodeURIComponent(backupName)}/restore`, {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/backups/${encodeURIComponent(backupName)}/restore`, {
         method: 'POST',
       });
       const data = await res.json();
@@ -510,7 +510,7 @@ const AdminDashboard = () => {
   const saveContentSettings = async () => {
     setSavingContent(true);
     try {
-      const res = await authFetch('http://localhost:5000/api/admin/content-settings', {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/content-settings`, {
         method: 'PUT',
         body: JSON.stringify(contentSettings),
       });
@@ -534,7 +534,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     setSavingSubAdmin(true);
     try {
-      const res = await authFetch('http://localhost:5000/api/admin/admin-users', {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/admin-users`, {
         method: 'POST',
         body: JSON.stringify(subAdminForm),
       });
@@ -552,7 +552,7 @@ const AdminDashboard = () => {
 
   const updateAdminAccount = async (adminId, payload) => {
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/admin-users/${adminId}`, {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/admin-users/${adminId}`, {
         method: 'PUT',
         body: JSON.stringify(payload),
       });
@@ -568,7 +568,7 @@ const AdminDashboard = () => {
   const removeAdminAccount = async (adminId) => {
     if (!window.confirm('Remove this admin account?')) return;
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/admin-users/${adminId}`, {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/admin-users/${adminId}`, {
         method: 'DELETE',
       });
       const data = await res.json();
@@ -584,7 +584,7 @@ const AdminDashboard = () => {
     const newPassword = window.prompt('Enter new password for this sub-admin (minimum 8 characters):');
     if (!newPassword) return;
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/admin-users/${adminId}/reset-password`, {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/admin-users/${adminId}/reset-password`, {
         method: 'PUT',
         body: JSON.stringify({ password: newPassword }),
       });
@@ -606,7 +606,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     setSavingMember(true);
     try {
-      const res = await authFetch('http://localhost:5000/api/admin/members', {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/members`, {
         method: 'POST',
         body: JSON.stringify(memberForm),
       });
@@ -630,7 +630,7 @@ const AdminDashboard = () => {
     }
     if (!window.confirm('Remove this member?')) return;
     try {
-      const res = await authFetch(`http://localhost:5000/api/admin/members/${memberId}`, {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/members/${memberId}`, {
         method: 'DELETE',
       });
       const data = await res.json();
@@ -649,7 +649,7 @@ const AdminDashboard = () => {
     }
 
     try {
-      const res = await authFetch('http://localhost:5000/api/admin/users/bulk-action', {
+      const res = await authFetch(`${API_BASE_URL}/api/admin/users/bulk-action`, {
         method: 'POST',
         body: JSON.stringify({ userIds: selectedUserIds, action }),
       });

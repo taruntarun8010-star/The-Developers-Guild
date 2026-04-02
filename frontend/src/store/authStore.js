@@ -10,6 +10,9 @@ const getJSON = (key) => {
   }
 };
 
+// Get API base URL from environment or global config
+const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
+
 export const useAuthStore = create((set) => ({
   user: getJSON('user'),
   token: localStorage.getItem('token'),
@@ -30,7 +33,7 @@ export const useAuthStore = create((set) => ({
 
   refreshUserSession: async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/auth/refresh', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -47,7 +50,7 @@ export const useAuthStore = create((set) => ({
 
   refreshAdminSession: async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/refresh', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/refresh`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -63,14 +66,14 @@ export const useAuthStore = create((set) => ({
   },
 
   logoutUser: () => {
-    fetch('http://localhost:5000/api/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => {});
+    fetch(`${API_BASE_URL}/api/auth/logout`, { method: 'POST', credentials: 'include' }).catch(() => {});
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     set({ user: null, token: null });
   },
 
   logoutAdmin: () => {
-    fetch('http://localhost:5000/api/admin/logout', { method: 'POST', credentials: 'include' }).catch(() => {});
+    fetch(`${API_BASE_URL}/api/admin/logout`, { method: 'POST', credentials: 'include' }).catch(() => {});
     localStorage.removeItem('adminSession');
     localStorage.removeItem('adminToken');
     set({ adminUser: null, adminToken: null });

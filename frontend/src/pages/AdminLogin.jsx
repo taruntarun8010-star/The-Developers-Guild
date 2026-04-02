@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck } from 'lucide-react';
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
+
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,7 +17,7 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      const res = await fetch('http://localhost:5000/api/admin/login', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

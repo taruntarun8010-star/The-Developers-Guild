@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { KeyRound } from 'lucide-react';
 
+const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -16,7 +18,7 @@ const ForgotPassword = () => {
     setSuccess('');
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/forgot-password', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

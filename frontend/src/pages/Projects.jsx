@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Code2, ExternalLink, FolderKanban } from 'lucide-react';
 
+const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
+
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/projects')
+    fetch(`${API_BASE_URL}/api/projects`)
       .then(r => r.json())
       .then(data => setProjects(data))
       .catch(() => setProjects([]))

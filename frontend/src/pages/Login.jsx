@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import { useAuthStore } from '../store/authStore';
 
 const REMEMBER_EMAIL_KEY = 'rememberedLoginEmail';
-const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');
+const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),

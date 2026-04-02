@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import TeamMembersManager from '../components/TeamMembersManager';
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
+
 const About = () => {
   const [aboutContent, setAboutContent] = useState({
     aboutTitle: "About The Developers' Guild",
@@ -11,7 +13,7 @@ const About = () => {
   useEffect(() => {
     const loadAboutContent = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/content-settings');
+        const res = await fetch(`${API_BASE_URL}/api/content-settings`);
         if (!res.ok) return;
         const data = await res.json();
         setAboutContent({
