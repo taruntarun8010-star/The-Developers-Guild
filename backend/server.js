@@ -15,19 +15,19 @@ const { getDb, writeDb } = require('./dbUtils');
 
 const app = express();
 
+app.use(cors({
+  origin: 'https://thedevelopersguild.tech',
+  credentials: true,
+}));
+
+app.options('*', cors());
+
 const PORT = process.env.PORT || 5000;
 const USER_JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key';
 const REFRESH_JWT_SECRET = process.env.REFRESH_JWT_SECRET || 'aimt-refresh-secret-2026-change';
 const ACCESS_TOKEN_TTL = '15m';
 const REFRESH_TOKEN_TTL = '30d';
 const REFRESH_COOKIE_NAME = 'dg_refresh_token';
-
-const corsOptions = {
-  origin: 'https://thedevelopersguild.tech',
-  methods: 'GET,POST,PUT,DELETE,OPTIONS',
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-};
 
 // Rate limiters
 const chatLimiter = rateLimit({
@@ -48,8 +48,6 @@ const contactLimiter = rateLimit({
   message: { message: 'Too many contact messages. Please wait a few minutes and try again.' }
 });
 
-app.use(cors(corsOptions));
-app.options('*', cors());
 app.use(bodyParser.json());
 
 const parseCookies = (cookieHeader) => {
