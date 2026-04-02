@@ -15,13 +15,22 @@ const { getDb, writeDb } = require('./dbUtils');
 
 const app = express();
 
-app.use(cors({
+// 1. CORS Configuration (Sirf EK baar setup karein)
+const corsOptions = {
   origin: 'https://thedevelopersguild.tech',
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-}));
+};
 
-app.options('*', cors());
+// 2. Middlewares Apply Karein
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Pre-flight ke liye same options use karein
 
+// 3. Body Parser aur Baaki cheezein
+app.use(bodyParser.json());
+
+// 4. Constants Setup
 const PORT = process.env.PORT || 5000;
 const USER_JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key';
 const REFRESH_JWT_SECRET = process.env.REFRESH_JWT_SECRET || 'aimt-refresh-secret-2026-change';
@@ -2917,7 +2926,7 @@ app.post('/api/events/cancel-registration/verify-otp', async (req, res) => {
   }
 
   if (!target.cancelOtpExpiresAt || new Date(target.cancelOtpExpiresAt).getTime() < Date.now()) {
-    return res.status(400).json({ message: 'Cancellation OTP expired. Request a new OTP.' });
+    return res.status(400).json({ message: 'Cancellation OTP expired. Please request a new OTP.' });
   }
 
   const removed = db.registrations[index];
@@ -3713,7 +3722,7 @@ const localAssistantReply = async ({ message, language, contextPath }) => {
     suggestions,
   });
 
-  if (/(admin\s*password|super\s*admin\s*password|admin\s*mail|admin\s*email|credential|secret|token|jwt|otp\s*code|पासवर्ड बताओ|एडमिन पासवर्ड|सीक्रेट|क्रेडेंशियल)/i.test(normalized)) {
+  if (/(admin\s*password|super\s*admin\s*password|admin\s*mail|admin\s*email|credential|secret|token|otp\s*code|पासवर्ड बताओ|एडमिन पासवर्ड|सीक्रेट|क्रेडेंशियल)/i.test(normalized)) {
     return make(
       'I cannot share passwords, emails, tokens, OTPs, or any private credentials. For admin access, use the official login and OTP verification flow from the Login page.',
       'मैं पासवर्ड, ईमेल, टोकन, OTP या कोई भी निजी क्रेडेंशियल साझा नहीं कर सकता। एडमिन एक्सेस के लिए Login पेज से आधिकारिक login और OTP verification flow का उपयोग करें।',
