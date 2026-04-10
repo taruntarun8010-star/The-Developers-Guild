@@ -7,8 +7,8 @@ import { LanguageProvider } from './components/LanguageContext.jsx'
 import './index.css'
 import App from './App.jsx'
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '')
-const LOCAL_API_BASE = 'https://the-developers-guild-backend.onrender.com'
+const API_BASE_URL = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild.onrender.com').replace(/\/$/, '')
+const LOCAL_API_BASE = 'https://the-developers-guild.onrender.com'
 
 window.__DG_API_BASE_URL__ = API_BASE_URL
 
