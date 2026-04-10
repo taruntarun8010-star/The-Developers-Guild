@@ -7,7 +7,13 @@ import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { Helmet } from 'react-helmet-async';
 
-const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild.onrender.com').replace(/\/$/, '');
+const API_BASE_URL = (
+  globalThis.process?.env?.VITE_API_URL ||
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  'https://the-developers-guild-backend.onrender.com/api'
+).replace(/\/$/, '');
+const API_ROOT_URL = API_BASE_URL.endsWith('/api') ? API_BASE_URL : `${API_BASE_URL}/api`;
 
 // Registration Zod Schema matching backend
 const registerSchema = z.object({
@@ -45,7 +51,7 @@ const Register = () => {
     }
     const handle = setTimeout(async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/auth/password-strength`, {
+        const res = await fetch(`${API_ROOT_URL}/auth/password-strength`, {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -79,7 +85,7 @@ const Register = () => {
     const toastId = toast.loading('Creating account...');
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
+      const res = await fetch(`${API_ROOT_URL}/auth/register`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -139,7 +145,7 @@ const Register = () => {
           Create your account and start your developer journey at AIMT.
         </p>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} method="post" action={`${API_ROOT_URL}/auth/register`}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
             
             <div>

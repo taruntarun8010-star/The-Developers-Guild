@@ -9,7 +9,13 @@ import { Helmet } from 'react-helmet-async';
 import { useAuthStore } from '../store/authStore';
 
 const REMEMBER_EMAIL_KEY = 'rememberedLoginEmail';
-const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild.onrender.com').replace(/\/$/, '');
+const API_BASE_URL = (
+  globalThis.process?.env?.VITE_API_URL ||
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  'https://the-developers-guild-backend.onrender.com/api'
+).replace(/\/$/, '');
+const API_ROOT_URL = API_BASE_URL.endsWith('/api') ? API_BASE_URL : `${API_BASE_URL}/api`;
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -51,7 +57,7 @@ const Login = () => {
 
     const toastId = toast.loading('Resending code...');
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/resend-verification`, {
+      const res = await fetch(`${API_ROOT_URL}/auth/resend-verification`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -80,7 +86,7 @@ const Login = () => {
     }
 
     try {
-      const userRes = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      const userRes = await fetch(`${API_ROOT_URL}/auth/login`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -114,7 +120,7 @@ const Login = () => {
         }
 
         // Admin fallback path
-        const adminRes = await fetch(`${API_BASE_URL}/api/admin/login`, {
+        const adminRes = await fetch(`${API_ROOT_URL}/admin/login`, {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -186,7 +192,7 @@ const Login = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} method="post" action={`${API_ROOT_URL}/auth/login`}>
           <div style={{ marginBottom: '1.5rem' }}>
             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '6px', color: 'var(--text-color)' }}>
               Email Address

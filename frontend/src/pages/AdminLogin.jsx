@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck } from 'lucide-react';
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild.onrender.com').replace(/\/$/, '');
+const API_BASE_URL = (
+  globalThis.process?.env?.VITE_API_URL ||
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  'https://the-developers-guild-backend.onrender.com/api'
+).replace(/\/$/, '');
+const API_ROOT_URL = API_BASE_URL.endsWith('/api') ? API_BASE_URL : `${API_BASE_URL}/api`;
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -17,7 +23,7 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/admin/login`, {
+      const res = await fetch(`${API_ROOT_URL}/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -55,7 +61,7 @@ const AdminLogin = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} method="post" action={`${API_ROOT_URL}/admin/login`}>
           <div style={{ marginBottom: '1rem' }}>
             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '6px', color: 'var(--text-color)' }}>
               Admin Email

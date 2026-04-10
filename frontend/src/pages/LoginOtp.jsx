@@ -4,7 +4,13 @@ import { Shield } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store/authStore';
 
-const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild.onrender.com').replace(/\/$/, '');
+const API_BASE_URL = (
+  globalThis.process?.env?.VITE_API_URL ||
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  'https://the-developers-guild-backend.onrender.com/api'
+).replace(/\/$/, '');
+const API_ROOT_URL = API_BASE_URL.endsWith('/api') ? API_BASE_URL : `${API_BASE_URL}/api`;
 
 const LoginOtp = () => {
   const [searchParams] = useSearchParams();
@@ -29,8 +35,8 @@ const LoginOtp = () => {
 
     try {
       const verifyEndpoint = isAdminMode
-        ? `${API_BASE_URL}/api/admin/login/verify-otp`
-        : `${API_BASE_URL}/api/auth/login/verify-otp`;
+        ? `${API_ROOT_URL}/admin/login/verify-otp`
+        : `${API_ROOT_URL}/auth/login/verify-otp`;
 
       const res = await fetch(verifyEndpoint, {
         method: 'POST',
@@ -70,8 +76,8 @@ const LoginOtp = () => {
 
     try {
       const resendEndpoint = isAdminMode
-        ? `${API_BASE_URL}/api/admin/login/resend-otp`
-        : `${API_BASE_URL}/api/auth/login/resend-otp`;
+        ? `${API_ROOT_URL}/admin/login/resend-otp`
+        : `${API_ROOT_URL}/auth/login/resend-otp`;
 
       const res = await fetch(resendEndpoint, {
         method: 'POST',
@@ -119,7 +125,7 @@ const LoginOtp = () => {
           </div>
         )}
         
-        <form onSubmit={handleVerifyOtp}>
+        <form onSubmit={handleVerifyOtp} method="post">
           <div style={{ marginBottom: '1rem' }}>
             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '6px', color: 'var(--text-color)' }}>
               Email Address
