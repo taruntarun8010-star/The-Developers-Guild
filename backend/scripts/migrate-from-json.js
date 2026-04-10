@@ -15,7 +15,7 @@ const AdminUser = require('../models/AdminUser');
 const MemberDirectory = require('../models/MemberDirectory');
 const ContentSettings = require('../models/ContentSettings');
 
-const DB_PATH = path.join(__dirname, '../db.json');
+const DB_PATH = path.join(__dirname, '../database/db.json');
 
 const migrate = async () => {
   try {

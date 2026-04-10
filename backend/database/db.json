@@ -27,6 +27,45 @@
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJraW5kIjoidXNlciIsInN1YiI6ImJjZmQxMzEyLTkwYmUtNGM4NS1iZTFlLTg0MmUxMDYyYjZmMCIsImVtYWlsIjoibWFrc2FkeXQwMDFAZ21haWwuY29tIiwiaWF0IjoxNzc1MDQ3NTgxLCJleHAiOjE3Nzc2Mzk1ODF9.O1LGGCPn3HnIQWQlbuRNOX3UA10AHZL_RvkDOYE5rhI"
       ],
       "studentProjects": []
+    },
+    {
+      "id": "0d670870-ebf6-4c7b-87a0-4040e95fe424",
+      "name": "Copilot Test",
+      "email": "copilot.test.1775804696751@gmail.com",
+      "collegeId": "TST001",
+      "passwordHash": "$2b$10$NSx3g8urFin05adgKsZkhOWVLDL45LHk3LP9RUToI46ZbazfEt252",
+      "verificationCode": "331272",
+      "verificationExpiresAt": "2026-04-10T07:19:56.903Z",
+      "isVerified": false,
+      "joinedAt": "2026-04-10T07:04:57.069Z",
+      "status": "active"
+    },
+    {
+      "id": "efe2152d-9b35-4d1d-804d-035bbee11ca3",
+      "name": "Fixed Local",
+      "email": "fixed.local.1775804866164@gmail.com",
+      "collegeId": "FIX001",
+      "passwordHash": "$2b$10$3sRPJ1J0z8yQtq/9LSo9aOfe0Oobxk8olvluJfKmQRFFD/pNZSn1C",
+      "verificationCode": "715201",
+      "verificationExpiresAt": "2026-04-10T07:22:46.331Z",
+      "isVerified": false,
+      "joinedAt": "2026-04-10T07:07:46.494Z",
+      "status": "active"
+    },
+    {
+      "id": "89f9f654-92b8-4b80-82e3-57d0e9b7efd4",
+      "name": "tarun sinha",
+      "email": "taruntarun8010@gmail.com",
+      "collegeId": "43654",
+      "passwordHash": "$2b$10$g3NFxA4a9VaMN6rVjkwaf.ARxl20eX4.c2wRtt4RGDSZaKepjxiVe",
+      "isVerified": true,
+      "joinedAt": "2026-04-10T07:09:02.008Z",
+      "status": "active",
+      "lastLoginAt": "2026-04-10T07:10:11.948Z",
+      "refreshTokens": [
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJraW5kIjoidXNlciIsInN1YiI6Ijg5ZjlmNjU0LTkyYjgtNGI4MC04MmUzLTU3ZDBlOWI3ZWZkNCIsImVtYWlsIjoidGFydW50YXJ1bjgwMTBAZ21haWwuY29tIiwiaWF0IjoxNzc1ODA1MDExLCJleHAiOjE3NzgzOTcwMTF9.DV_UIWNywoAIhG_vry7sAoiN1bQ9Vq9Gn0E8QLV86R4"
+      ],
+      "studentProjects": []
     }
   ],
   "events": [
@@ -88,6 +127,14 @@
   ],
   "registrations": [],
   "contactSubmissions": [
+    {
+      "id": "contact-1775118860987",
+      "name": "Smoke Test",
+      "email": "maksadyt001@gmail.com",
+      "message": "smoke from check command",
+      "status": "new",
+      "createdAt": "2026-04-02T08:34:20.987Z"
+    },
     {
       "id": "contact-1775047836406",
       "name": "pagal pari",

@@ -11,7 +11,7 @@ const QRCode = require('qrcode');
 const PDFDocument = require('pdfkit');
 const crypto = require('crypto');
 require('dotenv').config();
-const { getDb, writeDb } = require('./dbUtils');
+const { getDb, writeDb } = require('./database/dbUtils');
 
 const app = express();
 
@@ -19,17 +19,38 @@ const app = express();
 const allowedOrigins = [
   'https://thedevelopersguild.tech',
   'https://the-developers-guild-git-main-tarun-workshop.vercel.app',
-  'https://the-developers-guild.vercel.app'
+  'https://the-developers-guild.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:5174',
+  'http://127.0.0.1:5175'
 ];
+
+const envConfiguredOrigins = [
+  process.env.FRONTEND_BASE_URL,
+  ...String(process.env.FRONTEND_BASE_URLS || '').split(','),
+]
+  .map((value) => String(value || '').trim().replace(/\/$/, '').toLowerCase())
+  .filter(Boolean);
+
+const vercelPreviewPattern = /^https:\/\/the-developers-guild-.*\.vercel\.app$/;
+const allowedOriginSet = new Set([
+  ...allowedOrigins.map((item) => String(item || '').replace(/\/$/, '').toLowerCase()),
+  ...envConfiguredOrigins,
+]);
 
 // 2. CORS Options ko dynamic banayein
 const corsOptions = {
   origin: function (origin, callback) {
+    const normalizedOrigin = String(origin || '').replace(/\/$/, '').toLowerCase();
+
     // Agar request bina origin ke ho (like Postman) ya allowed list mein ho
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin || allowedOriginSet.has(normalizedOrigin) || vercelPreviewPattern.test(normalizedOrigin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(null, false);
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -200,7 +221,7 @@ const CHECKIN_JWT_SECRET = process.env.CHECKIN_JWT_SECRET || 'aimt-checkin-secre
 const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'Jontycreation@gmail.com').toLowerCase();
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Jonty@790';
 
-const BACKUP_DIR = path.join(__dirname, 'backups');
+const BACKUP_DIR = path.join(__dirname, 'database', 'backups');
 const ensureBackupDir = () => {
   if (!fs.existsSync(BACKUP_DIR)) {
     fs.mkdirSync(BACKUP_DIR, { recursive: true });
@@ -319,6 +340,7 @@ app.post('/api/auth/register', authLimiter, async (req, res) => {
     existingUser.verificationCode = verificationCode;
     existingUser.verificationExpiresAt = verificationExpiresAt;
     await writeDb(db);
+
     try {
       if (emailTransporter) {
         await sendVerificationEmail({ email: existingUser.email, name: existingUser.name, code: verificationCode });
@@ -328,14 +350,11 @@ app.post('/api/auth/register', authLimiter, async (req, res) => {
     } catch (emailErr) {
       console.error('Failed to send verification email:', emailErr);
     }
-
-  const responseObj = { 
-    message: "Account exists but not verified. A new verification code has been sent.", 
-    email: existingUser.email
-  };
-  res.status(200).json(responseObj);
-  await writeDb(db);
-  return;
+    const responseObj = {
+      message: "Account exists but not verified. A new verification code has been sent.",
+      email: existingUser.email
+    };
+    return res.status(200).json(responseObj);
   }
 
   const newUser = {
@@ -352,6 +371,7 @@ app.post('/api/auth/register', authLimiter, async (req, res) => {
   };
 
   db.users.push(newUser);
+  await writeDb(db);
 
   try {
     if (emailTransporter) {
@@ -367,7 +387,6 @@ app.post('/api/auth/register', authLimiter, async (req, res) => {
     message: "Registration successful. Please check your email to verify your account.", 
     email: newUser.email
   });
-  await writeDb(db);
 });
 
 app.post('/api/auth/login', authLimiter, async (req, res) => {
@@ -785,16 +804,24 @@ const decorateEvent = (db, event) => {
 
 // ─── Email Helpers (SMTP Verification) ───────────────────────────────────────
 const nodemailer = require('nodemailer');
-const smtpHost = process.env.SMTP_HOST;
+const normalizeSmtpPass = (rawValue) => {
+  const trimmed = String(rawValue || '').trim().replace(/^"(.*)"$/, '$1').replace(/^'(.*)'$/, '$1');
+  if (/^[A-Za-z0-9\s]+$/.test(trimmed) && trimmed.replace(/\s+/g, '').length === 16) {
+    return trimmed.replace(/\s+/g, '');
+  }
+  return trimmed;
+};
+
+const smtpHost = String(process.env.SMTP_HOST || '').trim();
 const smtpPort = Number(process.env.SMTP_PORT || 587);
-const smtpUser = process.env.SMTP_USER;
-const smtpPass = process.env.SMTP_PASS;
-const smtpFrom = process.env.SMTP_FROM || smtpUser;
+const smtpUser = String(process.env.SMTP_USER || '').trim();
+const smtpPass = normalizeSmtpPass(process.env.SMTP_PASS);
+const smtpFrom = String(process.env.SMTP_FROM || smtpUser || '').trim();
 const smtpSecure = process.env.SMTP_SECURE === 'true';
 const contactInbox = process.env.CONTACT_TO_EMAIL || smtpUser;
 
 const smtpConfigured = Boolean(smtpHost && smtpUser && smtpPass && smtpFrom);
-const emailTransporter = smtpConfigured
+let emailTransporter = smtpConfigured
   ? nodemailer.createTransport({
       host: smtpHost,
       port: smtpPort,
@@ -802,6 +829,17 @@ const emailTransporter = smtpConfigured
       auth: { user: smtpUser, pass: smtpPass },
     })
   : null;
+
+if (emailTransporter) {
+  emailTransporter.verify()
+    .then(() => {
+      console.log(`SMTP connected (${smtpHost}:${smtpPort}) as ${smtpUser}`);
+    })
+    .catch((err) => {
+      console.error('SMTP verification failed. Email delivery is disabled until credentials are fixed:', err?.message || err);
+      emailTransporter = null;
+    });
+}
 
 const generateVerificationCode = () => String(Math.floor(100000 + Math.random() * 900000));
 const signAdminToken = ({ email, role, permissions, name }) => signAdminAccessToken({
