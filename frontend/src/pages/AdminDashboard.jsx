@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Pencil, Trash2, PlusCircle, BarChart3, FolderKanban, Mail, Users, CalendarDays, MessageSquare, CheckCircle2, Bell, Shield, Download, Database } from 'lucide-react';
 import { useLanguage } from '../components/LanguageContext';
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
+const API_BASE_URL = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild.onrender.com').replace(/\/$/, '');
 
 const emptyEventForm = {
   name: '',

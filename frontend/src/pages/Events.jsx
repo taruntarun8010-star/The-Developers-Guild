@@ -9,7 +9,7 @@ const categoryColors = {
   Workshop:    { bg: 'rgba(139,92,246,0.15)', text: '#8b5cf6' },
 };
 
-const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild-backend.onrender.com').replace(/\/$/, '');
+const API_BASE_URL = (window.__DG_API_BASE_URL__ || import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://the-developers-guild.onrender.com').replace(/\/$/, '');
 
 const Events = () => {
   const [events, setEvents] = useState([]);
