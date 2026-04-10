@@ -35,7 +35,6 @@ const envConfiguredOrigins = [
   .map((value) => String(value || '').trim().replace(/\/$/, '').toLowerCase())
   .filter(Boolean);
 
-const vercelPreviewPattern = /^https:\/\/the-developers-guild-.*\.vercel\.app$/;
 const allowedOriginSet = new Set([
   ...allowedOrigins.map((item) => String(item || '').replace(/\/$/, '').toLowerCase()),
   ...envConfiguredOrigins,
@@ -45,12 +44,14 @@ const allowedOriginSet = new Set([
 const corsOptions = {
   origin: function (origin, callback) {
     const normalizedOrigin = String(origin || '').replace(/\/$/, '').toLowerCase();
+    const isVercelDomain = normalizedOrigin.endsWith('.vercel.app');
+    const isGuildTechDomain = normalizedOrigin.includes('thedevelopersguild.tech');
 
-    // Agar request bina origin ke ho (like Postman) ya allowed list mein ho
-    if (!origin || allowedOriginSet.has(normalizedOrigin) || vercelPreviewPattern.test(normalizedOrigin)) {
+    // Allow: no-origin requests, known domains, all Vercel previews, and guild tech domain.
+    if (!origin || allowedOriginSet.has(normalizedOrigin) || isVercelDomain || isGuildTechDomain) {
       callback(null, true);
     } else {
-      callback(null, false);
+      callback(new Error('Not allowed by CORS'));
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
