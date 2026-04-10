@@ -32,6 +32,14 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 950,
     rollupOptions: {
+      onwarn(warning, warn) {
+        // Suppress vite-plugin-pwa and Rolldown compatibility warnings
+        if (warning.code === 'THIS_IS_UNDEFINED' || 
+            (warning.message && warning.message.includes('assigns to bundle variable'))) {
+          return;
+        }
+        warn(warning);
+      },
       output: {
         manualChunks(id) {
           if (id.includes('node_modules/three') || id.includes('@react-three')) {
